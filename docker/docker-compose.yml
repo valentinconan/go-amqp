@@ -1,0 +1,29 @@
+version: '2.3'
+services:
+  go-amqp:
+    hostname: go-amqp
+    image: valentinconan/go-amqp:master
+    restart: unless-stopped
+    healthcheck:
+      test: wget -O /dev/null http://localhost:8080/ping || exit 1
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    ports:
+      - 8080:8080
+    networks:
+      - amqp-network
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+        - amqp-network
+networks:
+  amqp-network:
+    driver: bridge

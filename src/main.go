@@ -22,7 +22,13 @@ func main() {
 	}()
 
 	log.Print("Initializing consumer")
-	//for now, go routine will be launch un the unique consumer
-	amqp.Consumer()
+
+	//Launch the consumer in a go routine
+	go amqp.Consumer()
+
+
+	var forever chan struct{}
+	log.Print("Infinite loop")
+	<-forever
 
 }

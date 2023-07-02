@@ -2,6 +2,7 @@ package amqp
 
 import (
 	"log"
+	"time"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -61,24 +62,18 @@ func Consumer() {
 	failOnError(err, "Failed to register a consumer")
 
 
-	var forever chan struct{}
-
-	// Launch goroutine in order to proceed AMQP messages
-	go func() {
-		log.Print("Waiting for message to consume")
-		for msg := range msgs {
-			// process message
-			log.Printf("Message received: %s", msg.Body)
-
-			// Mark as read
-			err := msg.Ack(false)
-			if err != nil {
-				log.Printf("Error while acknoledgement: %v", err)
+	for {
+		select {
+		case delivery := <-msgs:
+			// Ack a message every 2 seconds
+			log.Printf("Received message: %s\n", delivery.Body)
+			if err := delivery.Ack(false); err != nil {
+				log.Printf("Error acknowledging message: %s\n", err)
 			}
+			<-time.After(time.Second * 2)
 		}
-	}()
+	}
 
-	<-forever
 
 	log.Println("End of consumer")
 }

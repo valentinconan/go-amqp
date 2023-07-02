@@ -25,6 +25,7 @@ func main() {
 
 	//Launch the consumer in a go routine
 	go amqp.Consumer()
+	go amqp.Consumer1()
 
 	var forever chan struct{}
 	log.Print("Infinite loop")

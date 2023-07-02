@@ -4,6 +4,8 @@ services:
     hostname: go-amqp
     image: valentinconan/go-amqp:master
     restart: unless-stopped
+    environment:
+      - GIN_MODE=release
     healthcheck:
       test: wget -O /dev/null http://localhost:8080/ping || exit 1
       interval: 1s

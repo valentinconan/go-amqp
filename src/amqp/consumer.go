@@ -61,7 +61,6 @@ func Consumer() {
 	)
 	failOnError(err, "Failed to register a consumer")
 
-
 	for {
 		select {
 		case delivery := <-msgs:
@@ -73,7 +72,6 @@ func Consumer() {
 			<-time.After(time.Second * 2)
 		}
 	}
-
 
 	log.Println("End of consumer")
 }

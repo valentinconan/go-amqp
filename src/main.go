@@ -9,7 +9,7 @@ import (
 func main() {
 
 	log.Print("Initializing router")
-	router.Init()
+	go router.Init()
 
 	log.Print("Initializing consumer")
 

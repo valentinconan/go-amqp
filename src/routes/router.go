@@ -13,10 +13,7 @@ func Init() {
 
 	healthRouter.Init(router)
 
-	//launch goroutine for http server
-	go func() {
-		if err := router.Run(":8080"); err != nil {
-			log.Fatalf("Erreur lors du lancement du serveur Gin: %v", err)
-		}
-	}()
+	if err := router.Run(":8080"); err != nil {
+		log.Fatalf("Erreur lors du lancement du serveur Gin: %v", err)
+	}
 }

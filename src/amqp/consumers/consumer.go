@@ -1,4 +1,4 @@
-package amqp
+package consumers
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func Consumer1() {
+func Consumer() {
 
 	conn, err := amqp.Dial("amqp://guest:guest@rabbitmq:5672/")
 	failOnError(err, "Failed to connect to RabbitMQ")
@@ -28,7 +28,7 @@ func Consumer1() {
 	failOnError(err, "Failed to declare an exchange")
 
 	q, err := ch.QueueDeclare(
-		"sample1.message.send",    // name
+		"sample.message.send",    // name
 		true, // durable
 		false, // delete when unused
 		false,  // exclusive

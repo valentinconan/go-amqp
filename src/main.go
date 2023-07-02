@@ -13,9 +13,8 @@ func main() {
 
 	log.Print("Initializing consumer")
 
-	//Launch the consumer in a go routine
-	go amqp.Consumer()
-	go amqp.Consumer1()
+	//Launch the consumers
+	amqp.Init()
 
 	var forever chan struct{}
 	log.Print("Infinite loop")

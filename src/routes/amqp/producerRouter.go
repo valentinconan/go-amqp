@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"log"
+	"go-amqp/src/amqp/producers"
 )
 
 func Init(router *gin.Engine) {
@@ -19,6 +20,9 @@ func Init(router *gin.Engine) {
 			log.Print("Unable to get body")
 
 		}
+
+		producers.Produce(string(jsonData))
+
 		//return data for display
 		c.JSON(http.StatusOK, gin.H{
 			"data": string(jsonData)})

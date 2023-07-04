@@ -3,17 +3,18 @@ package consumers
 import (
 	"log"
 	"time"
+	utils "go-amqp/src/amqp/tools"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 func Consumer1() {
 
 	conn, err := amqp.Dial("amqp://guest:guest@rabbitmq:5672/")
-	failOnError(err, "Failed to connect to RabbitMQ")
+	utils.FailOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
 	ch, err := conn.Channel()
-	failOnError(err, "Failed to open a channel")
+	utils.FailOnError(err, "Failed to open a channel")
 	defer ch.Close()
 
 	err = ch.ExchangeDeclare(
@@ -25,7 +26,7 @@ func Consumer1() {
 		false,    // no-wait
 		nil,      // arguments
 	)
-	failOnError(err, "Failed to declare an exchange")
+	utils.FailOnError(err, "Failed to declare an exchange")
 
 	q, err := ch.QueueDeclare(
 		"sample1.message.send",    // name
@@ -36,7 +37,7 @@ func Consumer1() {
 		amqp.Table{"x-queue-mode": "lazy"},   // arguments
 	)
 	if err != nil {
-		failOnError(err, "Failed to declare a queue")
+		utils.FailOnError(err, "Failed to declare a queue")
 	}
 
 
@@ -48,7 +49,7 @@ func Consumer1() {
 		false,
 		nil,
 	)
-	failOnError(err, "Failed to bind a queue")
+	utils.FailOnError(err, "Failed to bind a queue")
 	log.Println("Connected to queue "+q.Name)
 
 	msgs, err := ch.Consume(
@@ -60,7 +61,7 @@ func Consumer1() {
 		false,  // no-wait
 		nil,    // args
 	)
-	failOnError(err, "Failed to register a consumer")
+	utils.FailOnError(err, "Failed to register a consumer")
 
 	for {
 		select {

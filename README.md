@@ -43,3 +43,15 @@ run docker
 ```
 curl  http://localhost:8080/info
 ```
+
+### send whatever you want
+
+#### message ok
+```
+curl --data '{"message":"consume me please"}' -H 'Content-Type: application/json' http://localhost:8080/produce
+```
+
+#### message ko, redirected to error queue
+```
+curl --data '{"fail":true}' -H 'Content-Type: application/json' http://localhost:3000/amqp/produce
+```

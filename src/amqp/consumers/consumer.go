@@ -4,7 +4,8 @@ import (
 	utils "go-amqp/src/amqp/tools"
 	"log"
 	"time"
-
+    "encoding/json"
+    "go-amqp/src/amqp/producers"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -68,6 +69,14 @@ func Consumer() {
 		case delivery := <-msgs:
 			// Ack a message every 2 seconds
 			log.Printf("Received message: %s\n", delivery.Body)
+
+            var message Message
+            json.Unmarshal([]byte(delivery.Body), &message)
+            if message.Fail == true {
+                log.Print("testing the error queue redirection mechanism")
+                producers.Produce(string(delivery.Body), "sample.message.send.errors")
+            }
+
 			if err := delivery.Ack(false); err != nil {
 				log.Printf("Error acknowledging message: %s\n", err)
 			}
@@ -76,4 +85,9 @@ func Consumer() {
 	}
 
 	log.Println("End of consumer")
+}
+
+type Message struct {
+	Fail    bool    `json:"fail"`
+	Message string `json:"message"`
 }

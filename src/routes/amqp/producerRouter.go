@@ -21,7 +21,7 @@ func Init(router *gin.RouterGroup) {
 
 		}
 
-		producers.Produce(string(jsonData))
+		producers.Produce(string(jsonData), "")
 
 		//return data for display
 		c.JSON(http.StatusOK, gin.H{

@@ -48,10 +48,10 @@ curl  http://localhost:8080/info
 
 #### message ok
 ```
-curl --data '{"message":"consume me please"}' -H 'Content-Type: application/json' http://localhost:8080/produce
+curl --data '{"message":"consume me please"}' -H 'Content-Type: application/json' http://localhost:8080/amqp/produce
 ```
 
 #### message ko, redirected to error queue
 ```
-curl --data '{"fail":true}' -H 'Content-Type: application/json' http://localhost:3000/amqp/produce
+curl --data '{"fail":true}' -H 'Content-Type: application/json' http://localhost:8080/amqp/produce
 ```

@@ -1,9 +1,10 @@
 package consumers
 
 import (
+	utils "go-amqp/src/amqp/tools"
 	"log"
 	"time"
-	utils "go-amqp/src/amqp/tools"
+
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
@@ -29,17 +30,16 @@ func Consumer() {
 	utils.FailOnError(err, "Failed to declare an exchange")
 
 	q, err := ch.QueueDeclare(
-		"sample.message.send",    // name
-		true, // durable
-		false, // delete when unused
-		false,  // exclusive
-		false, // no-wait
-		amqp.Table{"x-queue-mode": "lazy"},   // arguments
+		"sample.message.send",              // name
+		true,                               // durable
+		false,                              // delete when unused
+		false,                              // exclusive
+		false,                              // no-wait
+		amqp.Table{"x-queue-mode": "lazy"}, // arguments
 	)
 	if err != nil {
 		utils.FailOnError(err, "Failed to declare a queue")
 	}
-
 
 	log.Println("Connection to queue")
 	err = ch.QueueBind(
@@ -50,12 +50,12 @@ func Consumer() {
 		nil,
 	)
 	utils.FailOnError(err, "Failed to bind a queue")
-	log.Println("Connected to queue "+q.Name)
+	log.Println("Connected to queue " + q.Name)
 
 	msgs, err := ch.Consume(
 		q.Name, // queue
 		"",     // consumer
-		false,   // auto-ack
+		false,  // auto-ack
 		false,  // exclusive
 		false,  // no-local
 		false,  // no-wait

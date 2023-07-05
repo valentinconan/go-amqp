@@ -11,11 +11,26 @@ func Init() {
 
 	router := gin.Default()
 	gin.SetMode(gin.ReleaseMode)
+    // catch all panic exception and return 500
+    router.Use(gin.Recovery())
 
-	healthRouter.Init(router)
-	amqpRouter.Init(router)
+    //base endpoint not secured
+    root := router.Group("/")
+
+	healthRouter.Init(root)
+
+    //secured group
+    amqp := router.Group("/amqp")
+    amqp.Use(checkAuthorization())
+	amqpRouter.Init(amqp)
 
 	if err := router.Run(":8080"); err != nil {
 		log.Fatalf("Erreur lors du lancement du serveur Gin: %v", err)
 	}
+}
+
+func checkAuthorization() gin.HandlerFunc {
+   return func(c *gin.Context) {
+      log.Println("All security check must be proceed here")
+   }
 }

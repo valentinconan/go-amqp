@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func Init(router *gin.Engine) {
+func Init(router *gin.RouterGroup) {
 
 
 	router.GET("/info", func(c *gin.Context) {

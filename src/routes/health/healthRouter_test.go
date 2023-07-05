@@ -12,7 +12,7 @@ import (
 var router *gin.Engine
 func TestMain(m *testing.M) {
 	router = gin.Default()
-	Init(router)
+	Init(router.Group("/"))
     os.Exit(m.Run())
 }
 

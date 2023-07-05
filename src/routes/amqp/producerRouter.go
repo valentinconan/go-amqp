@@ -8,7 +8,7 @@ import (
 	"go-amqp/src/amqp/producers"
 )
 
-func Init(router *gin.Engine) {
+func Init(router *gin.RouterGroup) {
 
 
 	router.POST("/produce", func(c *gin.Context) {
